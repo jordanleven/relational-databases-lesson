@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: 'relational-databases-lesson'
+    image: 'mysql:5.7'
+    volumes:
+      - './.docker-build/data/mysql:/var/lib/mysql'
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - 18766:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: universalStudios
+      MYSQL_USER: user
+      MYSQL_PASSWORD: movielover
