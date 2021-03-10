@@ -3,7 +3,8 @@ version: '3.4'
 services:
   db:
     container_name: 'relational-databases-lesson'
-    image: 'mysql:5.7'
+    image: 'mysql:5'
+    platform: linux/amd64
     volumes:
       - './.docker-build/data/mysql:/var/lib/mysql'
       - ./db:/docker-entrypoint-initdb.d
