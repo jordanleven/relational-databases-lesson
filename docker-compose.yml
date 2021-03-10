@@ -3,7 +3,7 @@ version: '3.4'
 services:
   db:
     container_name: 'relational-databases-lesson'
-    image: 'mysql:5'
+    image: 'mariadb:10.3'
     platform: linux/amd64
     volumes:
       - './.docker-build/data/mysql:/var/lib/mysql'
