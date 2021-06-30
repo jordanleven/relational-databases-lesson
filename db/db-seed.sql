@@ -1,157 +1,181 @@
--- MySQL dump 10.13  Distrib 8.0.19, for macos10.15 (x86_64)
---
--- Host: 127.0.0.1    Database: universalStudios
--- ------------------------------------------------------
--- Server version	8.0.19
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40101 SET NAMES utf8 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `genres`
---
+
+# Dump of table genres
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `genres`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `genres` (
-  `genre_id` int NOT NULL AUTO_INCREMENT,
+  `genre_id` int(11) NOT NULL AUTO_INCREMENT,
   `genre_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`genre_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `genres`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `genres` WRITE;
 /*!40000 ALTER TABLE `genres` DISABLE KEYS */;
-INSERT INTO `genres` VALUES (1,'Thriller'),(2,'Adventure'),(3,'Action');
+
+INSERT INTO `genres` (`genre_id`, `genre_name`)
+VALUES
+	(1,'Thriller'),
+	(2,'Adventure'),
+	(3,'Action'),
+	(4,'Fantasy'),
+	(5,'Family'),
+	(6,'Science Fiction');
+
 /*!40000 ALTER TABLE `genres` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `movies`
---
+
+# Dump of table movies
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `movies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `movies` (
-  `movie_id` int NOT NULL AUTO_INCREMENT,
+  `movie_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
-  `duration` int DEFAULT NULL,
-  `studio` int DEFAULT NULL,
-  `genre` int DEFAULT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `studio` int(11) DEFAULT NULL,
+  `genre` int(11) DEFAULT NULL,
   PRIMARY KEY (`movie_id`),
   KEY `id_idx` (`studio`),
   KEY `id_idx1` (`genre`),
   CONSTRAINT `genre_id` FOREIGN KEY (`genre`) REFERENCES `genres` (`genre_id`),
   CONSTRAINT `studio_id` FOREIGN KEY (`studio`) REFERENCES `studios` (`studio_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `movies`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `movies` WRITE;
 /*!40000 ALTER TABLE `movies` DISABLE KEYS */;
-INSERT INTO `movies` VALUES (1,'Backdraft',137,1,1),(2,'The Mummy',125,1,2),(3,'Terminator',108,2,3),(4,'Waterworld',176,1,3);
+
+INSERT INTO `movies` (`movie_id`, `title`, `duration`, `studio`, `genre`)
+VALUES
+	(1,'Backdraft',137,1,1),
+	(2,'The Mummy',125,1,2),
+	(3,'Terminator',108,2,3),
+	(4,'Waterworld',176,1,3),
+	(5,'Jurassic Park',128,1,2),
+	(6,'Harry Potter and the Philosopher\'s Stone',152,3,4),
+	(7,'Despicable Me',95,1,5),
+	(8,'Transformers',143,4,3),
+	(9,'Men in Black',98,5,6),
+	(10,'E.T. the Extra-Terrestrial',114,1,5),
+	(11,'Shrek',90,6,5),
+	(12,'The Fast and the Furious',106,1,3),
+	(13,'Jaws',124,1,2);
+
 /*!40000 ALTER TABLE `movies` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `rides`
---
+
+# Dump of table rides
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `rides`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `rides` (
-  `movie_id` int DEFAULT NULL,
-  `theme_park_id` int DEFAULT NULL,
-  KEY `id_idx` (`theme_park_id`),
-  KEY `id_idx1` (`movie_id`),
+  `movie_id` int(11) DEFAULT NULL,
+  `theme_park_id` int(11) DEFAULT NULL,
+  `name` varchar(45) NOT NULL DEFAULT '',
+  UNIQUE KEY `movie_id` (`movie_id`,`theme_park_id`),
+  KEY `theme_park_id` (`theme_park_id`),
   CONSTRAINT `movie_id` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movie_id`),
   CONSTRAINT `theme_park_id` FOREIGN KEY (`theme_park_id`) REFERENCES `theme_parks` (`theme_park_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rides`
---
 
 LOCK TABLES `rides` WRITE;
 /*!40000 ALTER TABLE `rides` DISABLE KEYS */;
-INSERT INTO `rides` VALUES (1,1),(2,2),(3,1),(3,2),(4,1);
+
+INSERT INTO `rides` (`name`, `movie_id`, `theme_park_id`)
+VALUES
+	('Backdraft',1,3),
+	('Revenge of the Mummy',2,2),
+	('Waterworld: A Live Sea War Spectacular',4,1),
+	('Despicable Me Minion Mayhem',7,1),
+	('Despicable Me Minion Mayhem',7,2),
+	('Despicable Me Minion Mayhem',7,3),
+	('Jurassic World: The Ride',5,1),
+	('Jurassic Park River Adventure',5,2),
+	('Transformers: The Ride 3D',8,1),
+	('Revenge of the Mummy: The Ride',2,1),
+	('Harry Potter and the Escape from Gringotts',6,2),
+	('Harry Potter and the Forbidden Journey',6,1),
+	('Men in Black: Alien Attack',9,1),
+	('E.T. Adventure',10,2),
+	('Fast & Furious: Supercharged',12,2),
+	('Transformers: The Ride 3D',8,2),
+	('Shrek: 4D',11,2),
+	('Shrek: 4D',11,3),
+	('Jurassic Park: The Ride',5,3),
+	('T2-3D: Battle Across Time',3,3),
+	('Jaws: The Ride',13,3);
+
 /*!40000 ALTER TABLE `rides` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `studios`
---
+
+# Dump of table studios
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `studios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `studios` (
-  `studio_id` int NOT NULL AUTO_INCREMENT,
+  `studio_id` int(11) NOT NULL AUTO_INCREMENT,
   `studio_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`studio_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `studios`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `studios` WRITE;
 /*!40000 ALTER TABLE `studios` DISABLE KEYS */;
-INSERT INTO `studios` VALUES (1,'Universal'),(2,'TriStar');
+
+INSERT INTO `studios` (`studio_id`, `studio_name`)
+VALUES
+	(1,'Universal Studios'),
+	(2,'TriStar'),
+	(3,'Warner Brothers'),
+	(4,'Paramount Pictures'),
+	(5,'Columbia Pictures'),
+	(6,'Dreamworks');
+
 /*!40000 ALTER TABLE `studios` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `theme_parks`
---
+
+# Dump of table theme_parks
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `theme_parks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `theme_parks` (
-  `theme_park_id` int NOT NULL AUTO_INCREMENT,
+  `theme_park_id` int(11) NOT NULL AUTO_INCREMENT,
   `location` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`theme_park_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `theme_parks`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `theme_parks` WRITE;
 /*!40000 ALTER TABLE `theme_parks` DISABLE KEYS */;
-INSERT INTO `theme_parks` VALUES (1,'Hollywood'),(2,'Orlando');
+
+INSERT INTO `theme_parks` (`theme_park_id`, `location`)
+VALUES
+	(1,'Hollywood'),
+	(2,'Orlando'),
+	(3,'Japan');
+
 /*!40000 ALTER TABLE `theme_parks` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2020-05-09 11:24:53
