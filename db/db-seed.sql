@@ -13,8 +13,8 @@
 DROP TABLE IF EXISTS `genres`;
 
 CREATE TABLE `genres` (
-  `genre_id` int(11) NOT NULL AUTO_INCREMENT,
-  `genre_name` varchar(45) DEFAULT NULL,
+  `genre_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID for a specific genre',
+  `genre_name` varchar(45) DEFAULT NULL COMMENT 'The genre name',
   PRIMARY KEY (`genre_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -40,11 +40,11 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `movies`;
 
 CREATE TABLE `movies` (
-  `movie_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
-  `studio` int(11) DEFAULT NULL,
-  `genre` int(11) DEFAULT NULL,
+  `movie_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID for a specific movie',
+  `title` varchar(45) DEFAULT NULL COMMENT 'The movie title',
+  `duration` int(11) DEFAULT NULL COMMENT 'The duration of the movie in minutes',
+  `studio` int(11) DEFAULT NULL COMMENT 'The primary key of the studio that produced a specific movie',
+  `genre` int(11) DEFAULT NULL COMMENT 'The primary key of the genere associated with a specific movie',
   PRIMARY KEY (`movie_id`),
   KEY `id_idx` (`studio`),
   KEY `id_idx1` (`genre`),
@@ -81,9 +81,9 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `rides`;
 
 CREATE TABLE `rides` (
-  `movie_id` int(11) DEFAULT NULL,
-  `theme_park_id` int(11) DEFAULT NULL,
-  `name` varchar(45) NOT NULL DEFAULT '',
+  `movie_id` int(11) DEFAULT NULL COMMENT 'The primary key of a specific movie a ride is based on',
+  `theme_park_id` int(11) DEFAULT NULL COMMENT 'The primary key of a theme park a is located in',
+  `name` varchar(45) NOT NULL DEFAULT '' COMMENT 'The name of a specific ride',
   UNIQUE KEY `movie_id` (`movie_id`,`theme_park_id`),
   KEY `theme_park_id` (`theme_park_id`),
   CONSTRAINT `movie_id` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movie_id`),
@@ -127,8 +127,8 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `studios`;
 
 CREATE TABLE `studios` (
-  `studio_id` int(11) NOT NULL AUTO_INCREMENT,
-  `studio_name` varchar(45) DEFAULT NULL,
+  `studio_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The primary key for a specific movie studio',
+  `studio_name` varchar(45) DEFAULT NULL COMMENT 'The name of a specific movie studio',
   PRIMARY KEY (`studio_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -154,8 +154,8 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `theme_parks`;
 
 CREATE TABLE `theme_parks` (
-  `theme_park_id` int(11) NOT NULL AUTO_INCREMENT,
-  `location` varchar(45) DEFAULT NULL,
+  `theme_park_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID of a specific theme park',
+  `location` varchar(45) DEFAULT NULL COMMENT 'The location of a specific theme park',
   PRIMARY KEY (`theme_park_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
