@@ -171,7 +171,62 @@ VALUES
 /*!40000 ALTER TABLE `theme_parks` ENABLE KEYS */;
 UNLOCK TABLES;
 
+# Create Views
+# ------------------------------------------------------------
 
+CREATE OR REPLACE VIEW `all_hollywood_rides` AS
+  SELECT rides.name as 'Ride Name'
+  FROM rides
+  JOIN theme_parks ON rides.theme_park_id = theme_parks.theme_park_id
+  WHERE theme_parks.location = 'Hollywood';
+
+CREATE OR REPLACE VIEW `all_universal_movie_rides` AS
+  SELECT movies.title as 'Movie Name', rides.name as 'Ride Name'
+  FROM rides
+  JOIN movies ON rides.movie_id = movies.movie_id
+  JOIN studios ON movies.studio = studios.studio_id
+  WHERE studios.studio_name = 'Universal Studios';
+
+CREATE OR REPLACE VIEW `duplicate_rides_with_unique_names` AS
+  SELECT rides.name as 'Name' FROM rides
+  JOIN (
+    SELECT rides.name, rides.movie_id
+    FROM rides
+    GROUP BY rides.movie_id
+    HAVING COUNT(*) > 1
+  ) r
+  ON rides.movie_id = r.movie_id
+  GROUP BY rides.name
+  HAVING COUNT(*) = 1;
+
+CREATE OR REPLACE VIEW `movie_length_per_park` AS
+  SELECT theme_parks.location as 'Theme Park Location', ROUND(SUM(movies.duration) / 60, 2) AS 'Movie Length (hours)'
+  FROM rides
+  JOIN theme_parks ON rides.theme_park_id = theme_parks.theme_park_id
+  JOIN movies ON rides.movie_id = movies.movie_id
+  GROUP BY theme_parks.location
+  ORDER BY theme_parks.location ASC;
+
+CREATE OR REPLACE VIEW `movies_by_genre` AS
+  SELECT genres.genre_name as 'Genre Name', COUNT(*) AS 'Number of Movies'
+  FROM genres
+  JOIN movies ON genres.genre_id = movies.genre
+  GROUP BY genres.genre_id
+  ORDER BY COUNT(*) DESC;
+
+CREATE OR REPLACE VIEW `number_of_rides_per_park` AS
+  SELECT theme_parks.location as 'Theme Park Location', COUNT(*) AS 'Number of Rides'
+  FROM rides
+  JOIN theme_parks ON rides.theme_park_id = theme_parks.theme_park_id
+  GROUP BY theme_parks.location
+  ORDER BY theme_parks.location ASC;
+
+CREATE OR REPLACE VIEW `rides_inspired_by_movies` AS
+  SELECT movies.title as 'Movie', COUNT(*) as 'Number of Rides'
+  FROM rides
+  JOIN movies ON rides.movie_id = movies.movie_id
+  GROUP BY rides.movie_id
+  ORDER BY COUNT(*) DESC;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
